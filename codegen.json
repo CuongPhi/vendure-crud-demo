@@ -1,0 +1,30 @@
+{
+  "overwrite": true,
+  "config": {
+    "strict": true
+  },
+  "generates": {
+    "src/plugins/real-estate/generated-admin-types.ts": {
+      "schema": "http://localhost:3000/admin-api",
+      "plugins": [
+        {
+          "add": { "content": "/* eslint-disable */" }
+        },
+        "typescript",
+        "typescript-compatibility"
+      ]
+    },
+    "src/plugins/real-estate/ui/generated-types.ts": {
+      "schema": "http://localhost:3000/admin-api",
+      "documents": "src/plugins/real-estate/ui/**/*.graphql.ts",
+      "plugins": [
+        {
+          "add": { "content": "/* eslint-disable */" }
+        },
+        "typescript",
+        "typescript-compatibility",
+        "typescript-operations"
+      ]
+    }
+  }
+}
