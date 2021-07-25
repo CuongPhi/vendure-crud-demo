@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
     selector: 'real-estate list',
-    templateUrl: './real-estate-list.component.html',
+    templateUrl: './list.component.html',
 })
 
 export class RealEstateListComponent {

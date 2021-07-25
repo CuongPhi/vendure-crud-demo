@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule, createResolveData  } from '@vendure/admin-ui/core';
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
-import { RealEstateListComponent } from "./components/real-estate-list/real-estate-list.component";
-import { DetailComponent } from "./components/real-estate-list/detail.component";
+import { RealEstateListComponent } from "./components/list/list.component";
+import { DetailComponent } from "./components/detail/detail.component";
 import RealEstateDetailResolver from './provider/routing/detail/detail-resolver';
 
 @NgModule({

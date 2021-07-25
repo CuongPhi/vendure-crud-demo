@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
     BaseDetailComponent,
@@ -8,7 +8,7 @@ import {
     ServerConfigService,
 } from '@vendure/admin-ui/core';
 import { Observable, of } from 'rxjs';
-import { filter, map, mapTo, switchMap } from 'rxjs/operators';
+import { filter, mapTo } from 'rxjs/operators';
 
 import {
     RealEstateCustomFieldsFragment,
@@ -18,7 +18,7 @@ import {
     CreateRealEstate
 } from '../../generated-types';
 
-import { UPDATE_REAL_ESTATE, CREATE_REAL_ESTATE } from "./real-estate-list.graphql";
+import { UPDATE_REAL_ESTATE, CREATE_REAL_ESTATE } from "./detail.graphql";
 
 @Component({
     selector: 'real-estate-detail',
@@ -127,7 +127,7 @@ export class DetailComponent extends BaseDetailComponent<RealEstateCustomFieldsF
             const formValue = this.detailForm.value;
             const input: RealEstateUpdateInput = {
                 id: this.id,
-                projectName: formValue.name || "None",
+                projectName: formValue.projectName || "None",
                 price: formValue.price || 0,
                 address: formValue.address|| "None",
                 descriptions: formValue.descriptions || 'None'
@@ -142,25 +142,23 @@ export class DetailComponent extends BaseDetailComponent<RealEstateCustomFieldsF
         }
     }
 
+    /**
+     *
+     * @param entity
+     * @protected
+     */
     protected setFormValues(entity: RealEstateCustomFieldsFragment) {
-        let datas = <any>{};
+        let data = <any>{};
 
-        if(entity.projectName=="None"){
-            datas.projectName=""
-        }
+        data.projectName = entity.projectName=="None" ? "" : entity.projectName;
 
-        if(entity.address=="None"){
-            datas.address=""
-        }
+        data.address = entity.address=="None" ? "" : entity.address;
 
-        if(entity.price=='0'){
-            datas.price=0
-        }else{
-            datas.price=parseInt(datas.price)
-        }
+        data.price = entity.price || 0;
 
-        datas.descriptions=entity.descriptions;
-        this.detailForm.patchValue(datas);
+        data.descriptions = entity.descriptions=="None" ? "" : entity.descriptions;
+
+        this.detailForm.patchValue(data);
     }
 
 }
