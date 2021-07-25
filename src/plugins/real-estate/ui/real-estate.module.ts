@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule, createResolveData  } from '@vendure/admin-ui/core';
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
-import { RealEstateListComponent } from "./components/list/list.component";
 import { DetailComponent } from "./components/detail/detail.component";
 import RealEstateDetailResolver from './provider/routing/detail/detail-resolver';
+import { ListComponent } from "./components/list/list.component";
 
 @NgModule({
     imports: [
@@ -13,7 +13,7 @@ import RealEstateDetailResolver from './provider/routing/detail/detail-resolver'
             {
                 path: '',
                 pathMatch: 'full',
-                component: RealEstateListComponent,
+                component: ListComponent,
                 data: {
                     breadcrumb: [
                         {
@@ -38,7 +38,7 @@ import RealEstateDetailResolver from './provider/routing/detail/detail-resolver'
     ],
     declarations: [
         DashboardComponent,
-        RealEstateListComponent,
+        ListComponent,
         DetailComponent
     ],
     providers:[RealEstateDetailResolver],

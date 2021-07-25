@@ -2335,6 +2335,8 @@ export type Mutation = {
   removeMembersFromZone: Zone;
   addRealEstate: RealEstate;
   updateRealEstate: RealEstate;
+  deleteRealEstate: RealEstate;
+  deleteAllRealEstates: Scalars['Boolean'];
 };
 
 
@@ -2884,6 +2886,11 @@ export type MutationAddRealEstateArgs = {
 
 export type MutationUpdateRealEstateArgs = {
   input: RealEstateUpdateInput;
+};
+
+
+export type MutationDeleteRealEstateArgs = {
+  id: Scalars['ID'];
 };
 
 export type NativeAuthInput = {
@@ -3889,6 +3896,7 @@ export type Query = {
   taxRate?: Maybe<TaxRate>;
   zones: Array<Zone>;
   zone?: Maybe<Zone>;
+  RealEstates: RealEstateList;
   RealEstate?: Maybe<RealEstate>;
 };
 
@@ -4111,6 +4119,11 @@ export type QueryZoneArgs = {
 };
 
 
+export type QueryRealEstatesArgs = {
+  options?: Maybe<RealEstateListOptions>;
+};
+
+
 export type QueryRealEstateArgs = {
   id: Scalars['ID'];
 };
@@ -4131,6 +4144,39 @@ export type RealEstateAddInput = {
   descriptions?: Maybe<Scalars['String']>;
   price?: Maybe<Scalars['String']>;
   address: Scalars['String'];
+};
+
+export type RealEstateFilterParameter = {
+  projectName?: Maybe<StringOperators>;
+  descriptions?: Maybe<StringOperators>;
+  price?: Maybe<StringOperators>;
+  address?: Maybe<StringOperators>;
+  createdAt?: Maybe<DateOperators>;
+  updatedAt?: Maybe<DateOperators>;
+};
+
+export type RealEstateList = PaginatedList & {
+  __typename?: 'RealEstateList';
+  items: Array<RealEstate>;
+  totalItems: Scalars['Int'];
+};
+
+export type RealEstateListOptions = {
+  sortPrice: Scalars['Int'];
+  skip?: Maybe<Scalars['Int']>;
+  take?: Maybe<Scalars['Int']>;
+  sort?: Maybe<RealEstateSortParameter>;
+  filter?: Maybe<RealEstateFilterParameter>;
+};
+
+export type RealEstateSortParameter = {
+  id?: Maybe<SortOrder>;
+  projectName?: Maybe<SortOrder>;
+  descriptions?: Maybe<SortOrder>;
+  price?: Maybe<SortOrder>;
+  address?: Maybe<SortOrder>;
+  createdAt?: Maybe<SortOrder>;
+  updatedAt?: Maybe<SortOrder>;
 };
 
 export type RealEstateUpdateInput = {

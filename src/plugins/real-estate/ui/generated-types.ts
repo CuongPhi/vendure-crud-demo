@@ -2335,6 +2335,8 @@ export type Mutation = {
   removeMembersFromZone: Zone;
   addRealEstate: RealEstate;
   updateRealEstate: RealEstate;
+  deleteRealEstate: RealEstate;
+  deleteAllRealEstates: Scalars['Boolean'];
 };
 
 
@@ -2884,6 +2886,11 @@ export type MutationAddRealEstateArgs = {
 
 export type MutationUpdateRealEstateArgs = {
   input: RealEstateUpdateInput;
+};
+
+
+export type MutationDeleteRealEstateArgs = {
+  id: Scalars['ID'];
 };
 
 export type NativeAuthInput = {
@@ -3889,6 +3896,7 @@ export type Query = {
   taxRate?: Maybe<TaxRate>;
   zones: Array<Zone>;
   zone?: Maybe<Zone>;
+  RealEstates: RealEstateList;
   RealEstate?: Maybe<RealEstate>;
 };
 
@@ -4111,6 +4119,11 @@ export type QueryZoneArgs = {
 };
 
 
+export type QueryRealEstatesArgs = {
+  options?: Maybe<RealEstateListOptions>;
+};
+
+
 export type QueryRealEstateArgs = {
   id: Scalars['ID'];
 };
@@ -4131,6 +4144,38 @@ export type RealEstateAddInput = {
   descriptions?: Maybe<Scalars['String']>;
   price?: Maybe<Scalars['String']>;
   address: Scalars['String'];
+};
+
+export type RealEstateFilterParameter = {
+  projectName?: Maybe<StringOperators>;
+  descriptions?: Maybe<StringOperators>;
+  price?: Maybe<StringOperators>;
+  address?: Maybe<StringOperators>;
+  createdAt?: Maybe<DateOperators>;
+  updatedAt?: Maybe<DateOperators>;
+};
+
+export type RealEstateList = PaginatedList & {
+  __typename?: 'RealEstateList';
+  items: Array<RealEstate>;
+  totalItems: Scalars['Int'];
+};
+
+export type RealEstateListOptions = {
+  skip?: Maybe<Scalars['Int']>;
+  take?: Maybe<Scalars['Int']>;
+  sort?: Maybe<RealEstateSortParameter>;
+  filter?: Maybe<RealEstateFilterParameter>;
+};
+
+export type RealEstateSortParameter = {
+  id?: Maybe<SortOrder>;
+  projectName?: Maybe<SortOrder>;
+  descriptions?: Maybe<SortOrder>;
+  price?: Maybe<SortOrder>;
+  address?: Maybe<SortOrder>;
+  createdAt?: Maybe<SortOrder>;
+  updatedAt?: Maybe<SortOrder>;
 };
 
 export type RealEstateUpdateInput = {
@@ -5026,6 +5071,19 @@ export namespace CreateRealEstate {
   export type AddRealEstate = CreateRealEstateMutation['addRealEstate'];
 }
 
+export namespace GetAllRealEstates {
+  export type Variables = GetAllRealEstatesQueryVariables;
+  export type Query = GetAllRealEstatesQuery;
+  export type RealEstates = GetAllRealEstatesQuery['RealEstates'];
+  export type Items = (NonNullable<GetAllRealEstatesQuery['RealEstates']['items'][0]>);
+}
+
+export namespace DeleteRealEstate {
+  export type Variables = DeleteRealEstateMutationVariables;
+  export type Mutation = DeleteRealEstateMutation;
+  export type DeleteRealEstate = DeleteRealEstateMutation['deleteRealEstate'];
+}
+
 export namespace GetRealEstate {
   export type Variables = GetRealEstateQueryVariables;
   export type Query = GetRealEstateQuery;
@@ -5058,6 +5116,36 @@ export type CreateRealEstateMutationVariables = Exact<{
 export type CreateRealEstateMutation = (
   { __typename?: 'Mutation' }
   & { addRealEstate: (
+    { __typename?: 'RealEstate' }
+    & RealEstateCustomFieldsFragment
+  ) }
+);
+
+export type GetAllRealEstatesQueryVariables = Exact<{
+  options?: Maybe<RealEstateListOptions>;
+}>;
+
+
+export type GetAllRealEstatesQuery = (
+  { __typename?: 'Query' }
+  & { RealEstates: (
+    { __typename?: 'RealEstateList' }
+    & Pick<RealEstateList, 'totalItems'>
+    & { items: Array<(
+      { __typename?: 'RealEstate' }
+      & RealEstateCustomFieldsFragment
+    )> }
+  ) }
+);
+
+export type DeleteRealEstateMutationVariables = Exact<{
+  input: Scalars['ID'];
+}>;
+
+
+export type DeleteRealEstateMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteRealEstate: (
     { __typename?: 'RealEstate' }
     & RealEstateCustomFieldsFragment
   ) }

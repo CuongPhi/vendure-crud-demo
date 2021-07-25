@@ -1,25 +1,42 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { RequestContext, TransactionalConnection} from '@vendure/core';
+import { ListQueryBuilder, TransactionalConnection} from '@vendure/core';
 import {DeepPartial} from 'typeorm';
 import {RealEstate} from '../entities/real-estate.entity';
+import { ListQueryOptions } from '@vendure/core/dist/common/types/common-types';
 
 @Injectable()
 export class RealEstateService {
 
-    constructor(private connection: TransactionalConnection) {
+    constructor(private connection: TransactionalConnection,
+                private listQueryBuilder: ListQueryBuilder) {
     }
-
-    async getRealEstateById(ctx: RequestContext, data: any) {
+    async getAllRealEstates(ctx: any,options?: ListQueryOptions<RealEstate>) {
+        return this.listQueryBuilder
+            .build(RealEstate, options)
+            .getManyAndCount()
+            .then(([realEstates, totalItems]) => {
+                return {
+                    items: realEstates,
+                    totalItems
+                };
+            });
+    }
+    async deleteSingleFeedback(ctx: any,ids: any){
+        const Variants = await this.connection.getEntityOrThrow(ctx, RealEstate, ids);
+        await this.connection.getRepository(ctx,RealEstate).delete(ids);
+        return Variants;
+    }
+    async getRealEstateById(ctx: any, data: any) {
         return this.connection.getEntityOrThrow(ctx, RealEstate, data);
     }
 
-    async addSingleRealEstate(ctx: RequestContext, data: DeepPartial<RealEstate>[]){
+    async addSingleRealEstate(ctx: any, data: DeepPartial<RealEstate>[]){
         const createdVariant = await this.connection.getRepository(ctx,RealEstate).create(data);
         const savedVariant = await this.connection.getRepository(ctx,RealEstate).save(createdVariant);
         return savedVariant;
     }
 
-    async updateSingleRealEstate(ctx: RequestContext,data: any){
+    async updateSingleRealEstate(ctx: any,data: any){
         const createdVariant = await this.connection.getRepository(ctx,RealEstate).update(data.id,{
             projectName: data.projectName || "None",
             descriptions: data.descriptions || "None",
