@@ -11,7 +11,13 @@ export class RealEstateAdminResolver {
     @Allow(Permission.SuperAdmin)
     RealEstate(@Ctx() ctx: RequestContext, @Args() args: any) {
         const {id} = args;
-        return this.RealEstateService.getRealEstateById(ctx,id);
+        return this.RealEstateService.getRealEstateById(ctx, id);
+    }
+    @Query()
+    @Allow(Permission.SuperAdmin)
+    RealEstates(@Ctx() ctx: RequestContext, @Args() args: any) {
+        const {options} = args;
+        return this.RealEstateService.getAllRealEstates(ctx,options || undefined);
     }
 
     @Transaction()
@@ -19,8 +25,7 @@ export class RealEstateAdminResolver {
     @Allow(Permission.SuperAdmin)
     addRealEstate(@Ctx() ctx: RequestContext, @Args() args: any){
         const {input} = args;
-        console.log(input);
-        return this.RealEstateService.addSingleRealEstate(ctx,input);
+        return this.RealEstateService.addSingleRealEstate(ctx, input);
     }
 
     @Transaction()
@@ -28,6 +33,13 @@ export class RealEstateAdminResolver {
     @Allow(Permission.SuperAdmin)
     updateRealEstate(@Ctx() ctx: RequestContext, @Args() args: any){
         const {input} = args;
-        return this.RealEstateService.updateSingleRealEstate(ctx,input);
+        return this.RealEstateService.updateSingleRealEstate(ctx, input);
+    }
+    @Transaction()
+    @Mutation()
+    @Allow(Permission.SuperAdmin)
+    deleteRealEstate(@Ctx() ctx: RequestContext, @Args() args: any){
+        const {input} = args;
+        return this.RealEstateService.deleteSingleRealEstate(ctx, input);
     }
 }

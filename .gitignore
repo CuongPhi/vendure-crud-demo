@@ -3,4 +3,4 @@ dist
 static/assets
 static/email/test-emails
 .idea
-src/__admin-ui
+src/__admin-ui/*

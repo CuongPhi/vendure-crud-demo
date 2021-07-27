@@ -94,7 +94,7 @@ export class ListComponent extends BaseListComponent<
         }
     }
 
-    deleteFeedback(id: string) {
+    deleteRealEstate(id: string) {
         this.modalService
             .dialog({
                 title: _('vdr-feedback-plugin.confirm-delete-feedback'),

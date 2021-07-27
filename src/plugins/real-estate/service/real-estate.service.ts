@@ -21,7 +21,7 @@ export class RealEstateService {
                 };
             });
     }
-    async deleteSingleFeedback(ctx: any,ids: any){
+    async deleteSingleRealEstate(ctx: any,ids: any){
         const Variants = await this.connection.getEntityOrThrow(ctx, RealEstate, ids);
         await this.connection.getRepository(ctx,RealEstate).delete(ids);
         return Variants;
